@@ -1,0 +1,48 @@
+backend:
+  name: github
+  repo: mifanyunshang/mifan-blog
+  branch: main
+
+# 出版控制
+publish_mode: editorial_workflow
+
+# 网站地址
+site_url: https://mifanyunshang.cn
+site_name: 米饭云上
+
+# 编辑器设置
+front_end_development_path: 
+show_preview_links: true
+
+# 媒体文件夹
+media_folder: "source/images"
+public_folder: "/images"
+
+# 集合定义
+collections:
+  # 文章
+  - name: "posts"
+    label: "文章"
+    folder: "source/_posts"
+    create: true
+    slug: "{{slug}}"
+    preview_path: "{{slug}}"
+    fields:
+      - {label: "标题", name: "title", widget: "string"}
+      - {label: "发布日期", name: "date", widget: "datetime", format: "YYYY-MM-DD HH:mm", date_format: "YYYY-MM-DD", time_format: "HH:mm", default: now}
+      - {label: "标签", name: "tags", widget: "list", default: []}
+      - {label: "分类", name: "categories", widget: "list", default: []}
+      - {label: "作者", name: "author", widget: "string", default: "米饭"}
+      - {label: "封面图片", name: "cover", widget: "image", required: false}
+      - {label: "摘要", name: "description", widget: "string", required: false}
+      - {label: "正文", name: "body", widget: "markdown"}
+
+  # 页面
+  - name: "pages"
+    label: "页面"
+    folder: "source/_data"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "标题", name: "title", widget: "string"}
+      - {label: "内容", name: "body", widget: "markdown"}
