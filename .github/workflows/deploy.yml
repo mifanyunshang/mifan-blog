@@ -1,43 +1,31 @@
-name: Deploy Hexo to GitHub Pages
+name: Deploy Blog
 
 on:
   push:
     branches:
-      - main  # 推送至main分支时自动触发部署
-  workflow_dispatch:  # 支持在GitHub网页手动触发部署
+      - main
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write  # 授予写入权限，用于推送gh-pages分支
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0  # 获取完整提交历史
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9
-
-      - name: Setup Node.js environment
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'pnpm'  # 使用pnpm缓存
-
+          cache: 'pnpm'
+      
       - name: Install dependencies
         run: pnpm install
-
-      - name: Build Hexo static files
-        run: npx hexo generate
-
+      
+      - name: Build
+        run: pnpm run build
+      
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}  # GitHub自动提供的令牌，无需手动配置
-          publish_dir: ./public  # Hexo构建输出目录
-          user_name: 'github-actions[bot]'
-          user_email: 'github-actions[bot]@users.noreply.github.com'
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+          publish_branch: gh-pages
